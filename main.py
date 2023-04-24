@@ -57,6 +57,11 @@ def gauss_seidel(A, b, x):
     y = forward_substitution(P, r)
     return x + y
 
+def gradient_descent(A, b, x):
+    r = b - A.dot(x)
+    alpha = np.transpose(r).dot(r) / np.transpose(r).dot(A.dot(r))
+    return x + alpha * r
+
 
 # Compute relative error
 def rel_error(x, x_true):
@@ -124,7 +129,9 @@ def solve_with_each_method(A, b, x, tol):
     jacobi_res = solve(A, b, tol, jacobi)
     print_stats(jacobi_res, x, "Jacobi")
     gauss_seidel_res = solve(A, b, tol, gauss_seidel)
-    print_stats(gauss_seidel_res, x, "Gauss-Seidel", True)
+    print_stats(gauss_seidel_res, x, "Gauss-Seidel")
+    gradient_descent_res = solve(A, b, tol, gradient_descent)
+    print_stats(gradient_descent_res, x, "Gradient Descent", True)
 
 
 def test():

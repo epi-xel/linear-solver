@@ -2,7 +2,8 @@ from scipy.io import mmread
 import numpy as np
 import utils
 
-max_iter = 20000
+MAX_ITER = 20000
+TOL = 1e-6
 
 def test():
     
@@ -11,12 +12,16 @@ def test():
 
     # Test methods with x = [1, 1, ... 1]
     for m in data:
+
         A = mmread('data/' + m + '.mtx')
         x = np.ones(A.shape[1])
         b = A.dot(x)
+
         print("\n==========================================")
-        print(utils.bcolors.HEADER + "Matrix " + m + utils.bcolors.ENDC)
+        print(utils.bcolors.OKCYAN + "MATRIX " + m + utils.bcolors.ENDC)
+        print("Tolerance: " + str(TOL))
         print("==========================================")
-        utils.solve_with_each_method(A, b, x, 1e-6, max_iter)
+
+        utils.solve_with_each_method(A, b, x, TOL, MAX_ITER)
 
 test()

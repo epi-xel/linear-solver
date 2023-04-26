@@ -4,6 +4,16 @@ import time as t
 import copy
 #import scipy.sparse.linalg as ssl
 
+class LinearSystem:
+    def __init__(self, A, b, conjugate_gradient = False):
+        self.A = A
+        self.b = b
+        self.x = init_x(A)
+
+        if(conjugate_gradient):
+            self.p = b - A.dot(init_x(A))
+            self.r = b - A.dot(init_x(A))
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -18,6 +28,7 @@ class bcolors:
 
 # TODO 1: Input management
 # TODO 2: Check if the matrix is diagonally dominant etc
+# TODO 3: Check if tutti 0 b, togli colori
 
 # Initialize the solution vector
 def init_x(A):
@@ -25,15 +36,16 @@ def init_x(A):
 
 
 # Check if the algorithm has converged
-def converged(x, prev_x, k, A, b, tol):
-    return np.linalg.norm(A.dot(x) - b) / np.linalg.norm(b) < tol
+def converged(ls, tol):
+    return np.linalg.norm(ls.A.dot(ls.x) - ls.b) / np.linalg.norm(ls.b) < tol
 
 
 # Compute the Jacobi update
-def jacobi(A, b, x):
-    P = np.diag(A.diagonal())
-    inv_P = np.diag(1 / A.diagonal())
-    return x - inv_P.dot(A.dot(x) - b)
+def jacobi(ls):
+    P = np.diag(ls.A.diagonal())
+    inv_P = np.diag(1 / ls.A.diagonal())
+    ls.x = ls.x - inv_P.dot(ls.A.dot(ls.x) - ls.b)
+    return
 
 
 # Solve the linear system Ax = b using forward substitution
@@ -41,7 +53,6 @@ def forward_substitution(A, b):
     n = A.shape[0]
     x = np.zeros(n)
     A = A.tocsc()
-
     for i in range(n):
         x[i] = (b[i] - A[i, :i].dot(x[:i])) / float(A[i, i])
  
@@ -49,29 +60,30 @@ def forward_substitution(A, b):
 
 
 # Compute the Gauss-Seidel update
-def gauss_seidel(A, b, x):
-    P = sp.sparse.tril(A)
-    r = b - A.dot(x)
+def gauss_seidel(ls):
+    P = sp.sparse.tril(ls.A)
+    r = ls.b - ls.A.dot(ls.x)
     #y = sp.sparse.linalg.spsolve_triangular(P.tocsr(), r)
     y = forward_substitution(P, r)
-    return x + y
+    ls.x = ls.x + y
+    return
 
 
 # Compute the gradient descend update
-def gradient_descent(A, b, x):
-    r = b - A.dot(x)
-    alpha = np.transpose(r).dot(r) / np.transpose(r).dot(A.dot(r))
-    return x + alpha * r
+def gradient_descent(ls):
+    r = ls.b - ls.A.dot(ls.x)
+    alpha = np.transpose(r).dot(r) / np.transpose(r).dot(ls.A.dot(r))
+    ls.x = ls.x + alpha * r
+    return
 
-
-def conjugate_gradient(A, b, x):
-    r = b - A.dot(x)
-    alpha = np.transpose(r).dot(r) / np.transpose(r).dot(A.dot(r))
-    x = x + alpha * r
-    p = copy.deepcopy(r)
-    r = b - A.dot(x)
-    beta = np.transpose(p).dot(r) / np.transpose(p).dot(A.dot(p))
-    return r + beta * p
+# Compute the conjugate gradient update
+def conjugate_gradient(ls):
+    alpha = np.transpose(ls.p).dot(ls.r) / np.transpose(ls.p).dot(ls.A.dot(ls.r))
+    ls.x = ls.x + alpha * ls.p
+    ls.r = ls.b - ls.A.dot(ls.x)
+    beta = np.transpose(ls.p).dot(ls.A.dot(ls.r)) / np.transpose(ls.p).dot(ls.A.dot(ls.p))
+    ls.p = ls.r - beta * ls.p
+    return
 
 
 # Compute relative error
@@ -79,17 +91,16 @@ def rel_error(x, x_true):
     return np.linalg.norm(x - x_true) / np.linalg.norm(x_true)
 
 
-def solve(A, b, tol, update, max_iter):
+def solve(ls, tol, update, max_iter):
 
     start = t.time()
-    x = init_x(A)
     k = 0
-    prev_x = x
 
-    while not converged(x, prev_x, k, A, b, tol):
-        prev_x = x
-        x = update(A, b, x)
+    while not converged(ls, tol):
+    
+        update(ls)
         k += 1
+
         if(k > max_iter):
             print(bcolors.FAIL
                 + "Max iterations reached"
@@ -99,8 +110,9 @@ def solve(A, b, tol, update, max_iter):
     end = t.time()
 
     time_elapsed = end - start
+
     res = dict();
-    res['solution'] = x
+    res['solution'] = ls.x
     res['time'] = time_elapsed
     res['iterations'] = k
 
@@ -112,7 +124,7 @@ def print_stats(res, x_true, method, last = False):
 
     print(bcolors.BOLD
           + "Stats for "
-          + bcolors.OKCYAN
+          + bcolors.OKBLUE
           + method 
           + bcolors.ENDC
           + bcolors.BOLD
@@ -137,12 +149,19 @@ def print_stats(res, x_true, method, last = False):
 # Solve the system with each method
 def solve_with_each_method(A, b, x, tol, max_iter):
 
-    jacobi_res = solve(A, b, tol, jacobi, max_iter)
+    ls1 = LinearSystem(A, b)
+    jacobi_res = solve(ls1, tol, jacobi, max_iter)
     print_stats(jacobi_res, x, "Jacobi")
-    gauss_seidel_res = solve(A, b, tol, gauss_seidel, max_iter)
+
+    ls2 = LinearSystem(A, b)
+    gauss_seidel_res = solve(ls2, tol, gauss_seidel, max_iter)
     print_stats(gauss_seidel_res, x, "Gauss-Seidel")
-    gradient_descent_res = solve(A, b, tol, gradient_descent, max_iter)
-    print_stats(gradient_descent_res, x, "Gradient Descent", True)
-    conjugate_gradient_res = solve(A, b, tol, conjugate_gradient, max_iter)
-    print_stats(gradient_descent_res, x, "Conjugate Gradient", True)
+
+    ls3 = LinearSystem(A, b)
+    gradient_descent_res = solve(ls3, tol, gradient_descent, max_iter)
+    print_stats(gradient_descent_res, x, "Gradient Descent")
+
+    ls4 = LinearSystem(A, b, conjugate_gradient = True)
+    conjugate_gradient_res = solve(ls4, tol, conjugate_gradient, max_iter)
+    print_stats(conjugate_gradient_res, x, "Conjugate Gradient", True)
 

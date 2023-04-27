@@ -4,7 +4,7 @@ import time as t
 import copy
 #import scipy.sparse.linalg as ssl
 
-class LinearSystem:
+class LinearSystemHelper:
     def __init__(self, A, b, conjugate_gradient = False):
         self.A = A
         self.b = b
@@ -149,19 +149,19 @@ def print_stats(res, x_true, method, last = False):
 # Solve the system with each method
 def solve_with_each_method(A, b, x, tol, max_iter):
 
-    ls1 = LinearSystem(A, b)
+    ls1 = LinearSystemHelper(A, b)
     jacobi_res = solve(ls1, tol, jacobi, max_iter)
     print_stats(jacobi_res, x, "Jacobi")
 
-    ls2 = LinearSystem(A, b)
+    ls2 = LinearSystemHelper(A, b)
     gauss_seidel_res = solve(ls2, tol, gauss_seidel, max_iter)
     print_stats(gauss_seidel_res, x, "Gauss-Seidel")
 
-    ls3 = LinearSystem(A, b)
+    ls3 = LinearSystemHelper(A, b)
     gradient_descent_res = solve(ls3, tol, gradient_descent, max_iter)
     print_stats(gradient_descent_res, x, "Gradient Descent")
 
-    ls4 = LinearSystem(A, b, conjugate_gradient = True)
+    ls4 = LinearSystemHelper(A, b, conjugate_gradient = True)
     conjugate_gradient_res = solve(ls4, tol, conjugate_gradient, max_iter)
     print_stats(conjugate_gradient_res, x, "Conjugate Gradient", True)
 

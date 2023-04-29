@@ -53,13 +53,15 @@ def init_parser():
                     description='Solve a linear system Ax = b and compute relative error ' +
                                 'where A is a sparse matrix and x is a vector of ones')
 
-    parser.add_argument('-t', '--test', type=str, help='Run all matrices .mtx in the specified folder')
-    parser.add_argument('-m', '--matrix', type=str, help='Matrix to solve as path to .mtx file')
+    parser.add_argument('-t', '--test', metavar='path/to/folder', type=str, help='Run all matrices .mtx in the specified folder')
+    parser.add_argument('-m', '--matrix', metavar='path/to/file.mtx', type=str, help='Matrix to solve as path to .mtx file')
 
     if(parser.parse_args().test):
         test(parser.parse_args().test)
     elif(parser.parse_args().matrix):
         input_matrix(parser.parse_args().matrix)
+    else:
+        parser.print_help()
 
 
 init_parser()

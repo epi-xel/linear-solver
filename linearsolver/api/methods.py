@@ -1,13 +1,13 @@
 import scipy as sp
 import numpy as np
 import time as t
-import linearsolver.methods.linear_system_helper as lsh
-import linearsolver.methods.output_colors as c
-import linearsolver.methods.print_utils as pu
+import api.model.linear_system_helper as lsh
+import api.print_utils as pu
 
 
 # TODO 2: Check if the matrix is diagonally dominant etc
-# TODO 3: Check if tutti 0 b, togli colori
+# TODO 3: Check if tutti 0 b
+
 
 # Check if the algorithm has converged
 def converged(ls, tol):
@@ -72,9 +72,9 @@ def solve(ls, tol, update, max_iter):
         k += 1
 
         if(k > max_iter):
-            print(c.bcolors.FAIL
+            print(pu.bcolors.FAIL
                 + "Max iterations reached"
-                + c.bcolors.ENDC )
+                + pu.bcolors.ENDC )
             break
 
     end = t.time()

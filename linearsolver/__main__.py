@@ -1,6 +1,7 @@
 from scipy.io import mmread
 import numpy as np
-import api.utils as utils
+import api.methods as methods
+import api.print_utils as pu
 import argparse
 import glob, os
 
@@ -23,13 +24,13 @@ def read_and_solve(path, tols):
 
     # Print matrix info
     print("\n==========================================")
-    print(utils.bcolors.OKCYAN + "MATRIX " + os.path.basename(path) + utils.bcolors.ENDC)
+    print(pu.bcolors.OKCYAN + "MATRIX " + os.path.basename(path) + pu.bcolors.ENDC)
     print("==========================================")
 
     for tol in tols:
         print("\nTolerance: " + str(tol))
         print("******************************************")
-        utils.solve_with_each_method(A, b, x, tol, MAX_ITER)
+        methods.solve_with_each_method(A, b, x, tol, MAX_ITER)
 
 
 # Run all matrices .mtx in the specified folder

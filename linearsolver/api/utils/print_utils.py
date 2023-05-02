@@ -1,4 +1,5 @@
 import numpy as np
+import api.model.linear_system_helper as lsh
 
 class bcolors:
     HEADER = '\033[95m'
@@ -25,15 +26,15 @@ def print_stats(res, x_true, method, last = False):
     print(bcolors.OKGREEN 
           + "> Relative error:  " 
           + bcolors.ENDC 
-          + str(rel_error(res['solution'], x_true)))
+          + str(rel_error(res.solution, x_true)))
     print(bcolors.OKGREEN 
           + "> Elapsed time:    " 
           + bcolors.ENDC 
-          + str(res['time']) + " sec")
+          + str(res.time) + " sec")
     print(bcolors.OKGREEN
           + "> Iterations:      " 
           + bcolors.ENDC 
-          + str(res['iterations']))
+          + str(res.iterations))
     if not last:
         print("------------------------------------------")
 

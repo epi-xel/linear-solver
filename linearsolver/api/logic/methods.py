@@ -2,7 +2,8 @@ import scipy as sp
 import numpy as np
 import time as t
 import api.model.linear_system_helper as lsh
-import api.print_utils as pu
+import api.utils.print_utils as pu
+import api.model.ls_result as lsr
 
 
 # TODO 2: Check if the matrix is diagonally dominant etc
@@ -81,10 +82,12 @@ def solve(ls, tol, update, max_iter):
 
     time_elapsed = end - start
 
-    res = dict()
-    res['solution'] = ls.x
-    res['time'] = time_elapsed
-    res['iterations'] = k
+    #res = dict()
+    #res['solution'] = ls.x
+    #res['time'] = time_elapsed
+    #res['iterations'] = k
+
+    res = lsr.LSResult(ls.x, time_elapsed, k)
 
     return res
 

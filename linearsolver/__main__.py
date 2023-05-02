@@ -1,14 +1,14 @@
 from scipy.io import mmread
 import numpy as np
-import methods.utils as utils
+import api.utils as utils
 import argparse
 import glob, os
 
 MAX_ITER = 20000
-TOL = 1e-6
+TOLS = [1e-4, 1e-6, 1e-8, 1e-10]
 
 # Read a matrix from a .mtx file and solve the linear system Ax = b
-def read_and_solve(path):
+def read_and_solve(path, tols):
 
     # Read matrix from file
     try:
@@ -24,25 +24,27 @@ def read_and_solve(path):
     # Print matrix info
     print("\n==========================================")
     print(utils.bcolors.OKCYAN + "MATRIX " + os.path.basename(path) + utils.bcolors.ENDC)
-    print("Tolerance: " + str(TOL))
     print("==========================================")
 
-    utils.solve_with_each_method(A, b, x, TOL, MAX_ITER)
+    for tol in tols:
+        print("\nTolerance: " + str(tol))
+        print("******************************************")
+        utils.solve_with_each_method(A, b, x, tol, MAX_ITER)
 
 
 # Run all matrices .mtx in the specified folder
-def test(path):
+def test(path, tols):
 
     if(path[-1] != '/'):
         path += '/'
     data = sorted(glob.glob(path + '*.mtx'))
     
     for m in data:
-        read_and_solve(m)
+        read_and_solve(m, tols)
 
 
-def input_matrix(matrix_path):
-    read_and_solve(matrix_path)
+def input_matrix(matrix_path, tols):
+    read_and_solve(matrix_path, tols)
 
 
 # Parse command line arguments
@@ -53,13 +55,20 @@ def init_parser():
                     description='Solve a linear system Ax = b and compute relative error ' +
                                 'where A is a sparse matrix and x is a vector of ones')
 
-    parser.add_argument('-t', '--test', metavar='path/to/folder', type=str, help='Run all matrices .mtx in the specified folder')
+    parser.add_argument('-a', '--all', metavar='path/to/folder', type=str, help='Run all matrices .mtx in the specified folder')
     parser.add_argument('-m', '--matrix', metavar='path/to/file.mtx', type=str, help='Matrix to solve as path to .mtx file')
+    parser.add_argument('-t','--tolerance', metavar='tolerance', nargs='+', 
+                        help='Tolerances to use in the methods. If none, tolerances used: 1e-4, 1e-6, 1e-8, 1e-10', type=float)
 
-    if(parser.parse_args().test):
-        test(parser.parse_args().test)
+    tols = TOLS
+
+    if(parser.parse_args().tolerance):
+        tols = parser.parse_args().tolerance
+
+    if(parser.parse_args().all):
+        test(parser.parse_args().all, tols)
     elif(parser.parse_args().matrix):
-        input_matrix(parser.parse_args().matrix)
+        input_matrix(parser.parse_args().matrix, tols)
     else:
         parser.print_help()
 

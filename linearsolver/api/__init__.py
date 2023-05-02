@@ -1,6 +1,6 @@
 from scipy.io import mmread
 import numpy as np
-import api.logic.methods as methods
+import api.logic.helpers as helper
 import api.utils.print_utils as pu
 import api.utils.parser as pars
 import api.model.constants as const
@@ -29,7 +29,7 @@ def read_and_solve(path, tols):
     for tol in tols:
         print("\nTolerance: " + str(tol))
         print("******************************************")
-        methods.solve_with_each_method(A, b, x, tol, const.MAX_ITER)
+        helper.solve_with_each_method(A, b, x, tol, const.MAX_ITER)
 
 
 # Run all matrices .mtx in the specified folder

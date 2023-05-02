@@ -82,11 +82,6 @@ def solve(ls, tol, update, max_iter):
 
     time_elapsed = end - start
 
-    #res = dict()
-    #res['solution'] = ls.x
-    #res['time'] = time_elapsed
-    #res['iterations'] = k
-
     res = lsr.LSResult(ls.x, time_elapsed, k)
 
     return res

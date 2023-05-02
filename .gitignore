@@ -1,2 +1,2 @@
-linearsolver/methods/__pycache__
 *.pyz
+*/__pycache__

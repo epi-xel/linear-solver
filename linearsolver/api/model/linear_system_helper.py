@@ -1,5 +1,6 @@
 import numpy as np
 
+
 # Helper class for linear system solver
 class LinearSystemHelper:
     def __init__(self, A, b, conjugate_gradient = False):
@@ -10,6 +11,7 @@ class LinearSystemHelper:
         if(conjugate_gradient):
             self.p = b - A.dot(init_x(A))
             self.r = b - A.dot(init_x(A))
+
 
 # Initialize the solution vector
 def init_x(A):

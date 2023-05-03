@@ -1,10 +1,27 @@
 from scipy.io import mmread
+import scipy.sparse.linalg as sl
+import scipy as sp
 import numpy as np
+import scipy.sparse as sparse
 import api.logic.helpers as helper
 import api.utils.print_utils as pu
 import api.utils.parser as pars
 import api.model.constants as const
 import glob, os
+
+
+def is_matrix_definite_positive(A):
+    vals, vecs = sl.eigs(A)
+    return sp.all(vals)
+
+
+def is_matrix_symmetric(A):
+
+    A1 = A.tocsr()
+    A2 = sparse.csr_matrix.transpose(A.tocsr())
+    return (np.array_equal(A1.indptr, A2.indptr) and 
+            np.array_equal(A1.indices, A2.indices) and 
+            np.array_equal(A1.data, A2.data))
 
 
 # Read a matrix from a .mtx file and solve the linear system Ax = b
@@ -15,7 +32,7 @@ def read_and_solve(path, tols):
         A = mmread(path)
     except Exception as e:
         print('Unable to read matrix: check path or file format')
-        exit(0)
+        return
 
     # Test methods with x = [1, 1, ... 1]
     x = np.ones(A.shape[1])
@@ -25,6 +42,10 @@ def read_and_solve(path, tols):
     print("\n==========================================")
     print(pu.bcolors.OKCYAN + "MATRIX " + os.path.basename(path) + pu.bcolors.ENDC)
     print("==========================================")
+
+    if (not is_matrix_definite_positive(A) or not is_matrix_symmetric(A)):
+        print(pu.bcolors.FAIL + "Matrix is not definite positive or symmetric" + pu.bcolors.ENDC)
+        return
 
     for tol in tols:
         print("\nTolerance: " + str(tol))
@@ -63,7 +84,3 @@ def init_solver():
         input_matrix(parser.parse_args().matrix, tols)
     else:
         parser.print_help()
-
-
-
-

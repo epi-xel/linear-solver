@@ -50,15 +50,17 @@ def input_matrix(matrix_path, tols):
 # Parse command line arguments
 def init_solver():
 
+    tols = const.TOLS
+
     parser = pars.init_parser()
 
     if(parser.parse_args().tolerance):
         tols = parser.parse_args().tolerance
 
     if(parser.parse_args().all):
-        test(parser.parse_args().all, const.TOLS)
+        test(parser.parse_args().all, tols)
     elif(parser.parse_args().matrix):
-        input_matrix(parser.parse_args().matrix, const.TOLS)
+        input_matrix(parser.parse_args().matrix, tols)
     else:
         parser.print_help()
 

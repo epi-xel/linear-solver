@@ -5,6 +5,7 @@ import linearsolver.utils.print_utils as pu
 from sksparse.cholmod import cholesky
 import sksparse.cholmod as cholmod
 
+
 # Check if the algorithm has converged
 def converged(ls, tol):
     return np.linalg.norm(ls.A.dot(ls.x) - ls.b) / np.linalg.norm(ls.b) < tol

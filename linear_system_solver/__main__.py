@@ -1,6 +1,6 @@
 from scipy.io import mmread
 import numpy as np
-import linearsolver.methods.helpers as helper
+import linearsolver.methods.big_ops as helper
 import linearsolver.utils.constants as const
 import argparse
 import glob, os

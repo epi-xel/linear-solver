@@ -39,7 +39,6 @@ def read_and_solve(path, tols):
     helper.complete_solve(os.path.basename(path), A, b, x, tols)
 
 
-
 # Run all matrices .mtx in the specified folder
 def test(path, tols):
 

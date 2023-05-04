@@ -1,9 +1,9 @@
 import numpy as np
-import time as t
-import linearsolver.model.ls_result as lsr
-import linearsolver.utils.print_utils as pu
+from time import time
+from linearsolver.utils.print_utils import bcolors
+from linearsolver.helpers.ls_result import LinearSystemResult
 from sksparse.cholmod import cholesky
-import sksparse.cholmod as cholmod
+# import sksparse.cholmod as cholmod
 
 
 # Check if the algorithm has converged
@@ -11,12 +11,13 @@ def converged(ls, tol):
     return np.linalg.norm(ls.A.dot(ls.x) - ls.b) / np.linalg.norm(ls.b) < tol
 
 
-def solve(ls, tol, update, max_iter):
+def solve(ls, tol, update, max_iter, check = True):
 
-    if(checks(ls.A, ls.b) == -1):
-        return
+    if(check):
+        if(checks(ls.A, ls.b) == -1):
+            return
 
-    start = t.time()
+    start = time()
     k = 0
 
     while not converged(ls, tol):
@@ -25,33 +26,34 @@ def solve(ls, tol, update, max_iter):
         k += 1
 
         if(k > max_iter):
-            print(pu.bcolors.FAIL
+            print(bcolors.FAIL
                 + "Max iterations reached"
-                + pu.bcolors.ENDC )
+                + bcolors.ENDC )
             break
 
-    end = t.time()
+    end = time()
 
     time_elapsed = end - start
 
-    res = lsr.LSResult(ls.x, time_elapsed, k)
+    res = LinearSystemResult(ls.x, time_elapsed, k)
 
     return res
 
 
 def checks(A, b):
+
     if(A.shape[0] != A.shape[1]):
-        print(pu.bcolors.FAIL + "Matrix is not square" + pu.bcolors.ENDC)
+        print(bcolors.FAIL + "Error: Matrix is not square" + bcolors.ENDC)
         return -1
     
     if(b.nonzero()[0].size == 0):
-        print(pu.bcolors.FAIL + "b is all zeros" + pu.bcolors.ENDC)
+        print(bcolors.WARNING + "b is all zeros, answer is an array of zeros" + bcolors.ENDC)
         return -1
     
     try:
         cholesky(A.tocsc())
     except:
-        print(pu.bcolors.FAIL + "Matrix is not positive definite or symmetric" + pu.bcolors.ENDC)
+        print(bcolors.FAIL + "Error: Matrix is not positive definite or symmetric" + bcolors.ENDC)
         return -1
 
     return 1

@@ -3,9 +3,10 @@ import numpy as np
 
 # Helper class for linear system solver
 class LinearSystemHelper:
-    def __init__(self, A, b, conjugate_gradient = False):
+    def __init__(self, A, b, x_true, conjugate_gradient = False):
         self.A = A
         self.b = b
+        self.x_true = x_true
         self.x = init_x(A)
 
         if(conjugate_gradient):

@@ -35,7 +35,7 @@ def solve(ls, tol, update, max_iter, check = True):
 
     time_elapsed = end - start
 
-    res = LinearSystemResult(ls.x, time_elapsed, k)
+    res = LinearSystemResult(ls.x, time_elapsed, k, ls.x_true)
 
     return res
 

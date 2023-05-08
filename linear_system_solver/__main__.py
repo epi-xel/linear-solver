@@ -1,7 +1,10 @@
 from scipy.io import mmread
+from pathlib import Path
 import numpy as np
 import linearsolver.methods.big_ops as helper
 import linearsolver.utils.constants as const
+import linearsolver.utils.analize as analize
+import pandas as pd
 import argparse
 import glob, os
 
@@ -36,7 +39,15 @@ def read_and_solve(path, tols):
     x = np.ones(A.shape[1])
     b = A.dot(x)
 
-    helper.complete_solve(os.path.basename(path), A, b, x, tols)
+    return helper.complete_solve(os.path.basename(path), A, b, x, tols)
+
+
+def export_results(df):
+    output_file = 'summary.csv'
+    output_dir = Path('results')
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    df.to_csv(output_dir / output_file)
 
 
 # Run all matrices .mtx in the specified folder
@@ -45,13 +56,21 @@ def test(path, tols):
     if(path[-1] != '/'):
         path += '/'
     data = sorted(glob.glob(path + '*.mtx'))
+
+    df = pd.DataFrame(columns=["Matrix", "Size", "Density", "Tolerance", "Method", "Relative error", "Time", "Iterations"])
     
     for m in data:
-        read_and_solve(m, tols)
+        df1 = read_and_solve(m, tols)
+        if df1 is not None:
+            df = pd.concat([df, df1], ignore_index=True)
+
+    export_results(df)
+    #analize.compare_result(df)
 
 
 def input_matrix(matrix_path, tols):
-    read_and_solve(matrix_path, tols)
+    df = read_and_solve(matrix_path, tols)
+    analize.compare_result(df)
 
 
 # Parse command line arguments

@@ -27,7 +27,7 @@ def print_stats(res, x_true, method, last = False):
     print(bcolors.OKGREEN 
           + "> Relative error:  " 
           + bcolors.ENDC 
-          + str(rel_error(res.solution, x_true)))
+          + str(res.relative_error))
     print(bcolors.OKGREEN 
           + "> Elapsed time:    " 
           + bcolors.ENDC 
@@ -38,8 +38,3 @@ def print_stats(res, x_true, method, last = False):
           + str(res.iterations))
     if not last:
         print("-" * const.PRINTED_LINES_LENGTH)
-
-
-# Compute relative error
-def rel_error(x, x_true):
-    return np.linalg.norm(x - x_true) / np.linalg.norm(x_true)

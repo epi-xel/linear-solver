@@ -1,4 +1,4 @@
 MAX_ITER = 20000
 TOLS = [1e-4, 1e-6, 1e-8, 1e-10]
 PRINTED_LINES_LENGTH = 52
-RESULTS_DIR = 'results'
+RESULTS_DIR = 'results/'

@@ -21,7 +21,7 @@ def init_parser():
     parser.add_argument('-m', '--matrix', metavar='path/to/file.mtx', type=str, help='Matrix to solve as path to .mtx file')
     parser.add_argument('-t','--tolerance', metavar='tolerance', nargs='+', 
                         help='Tolerances to use in the methods. If none, tolerances used: 1e-4, 1e-6, 1e-8, 1e-10', type=float)
-    parser.add_argument('-e', '--export', action='store_true', help='Export results to csv file and plot graphs')
+    parser.add_argument('-e', '--export', metavar='path/to/folder', type=str, help='Export results to csv file and plot graphs in specified folder')
 
     return parser
 
@@ -44,7 +44,7 @@ def read_and_solve(path, tols):
 
 
 # Run all matrices .mtx in the specified folder
-def run_all(path, tols, export_results):
+def run_all(path, tols, folder):
 
     if(path[-1] != '/'):
         path += '/'
@@ -58,19 +58,14 @@ def run_all(path, tols, export_results):
             df = pd.concat([df, df1], ignore_index=True)
 
     #export_results(df)
-    if(export_results):
-        analize.export_results(df)
+    if(folder is not None):
+        analize.export_results(df, folder)
         
 
-def input_matrix(matrix_path, tols, export_results):
+def input_matrix(matrix_path, tols, folder):
     df = read_and_solve(matrix_path, tols)
-    if(export_results):
-        export_results(df)
-
-
-def export_results(df):
-    analize.compare_results(df)
-    analize.export_results(df)
+    if(folder is not None):
+        analize.export_results(df, folder)
 
 
 # Parse command line arguments
@@ -80,18 +75,18 @@ def init_solver():
 
     parser = init_parser()
 
-    export_results = False
+    folder = None
 
     if(parser.parse_args().tolerance):
         tols = parser.parse_args().tolerance
 
     if(parser.parse_args().export):
-        export_results = True
+        folder = parser.parse_args().export
 
     if(parser.parse_args().all):
-        run_all(parser.parse_args().all, tols, export_results)
+        run_all(parser.parse_args().all, tols, folder)
     elif(parser.parse_args().matrix):
-        input_matrix(parser.parse_args().matrix, tols, export_results)
+        input_matrix(parser.parse_args().matrix, tols, folder)
     else:
         parser.print_help()
 

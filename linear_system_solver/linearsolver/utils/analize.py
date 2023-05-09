@@ -30,33 +30,52 @@ def build_result_df(A, res, name, tol, method):
     return df
 
 
-def compare_results(df):
+def export_results(df, path):
+
+    print("\n" + "Exporting results...")
+
+    output_file = 'summary.csv'
+    output_dir = Path(path + RESULTS_DIR)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    df.to_csv(output_dir / output_file)
+
+    compare_results(df, path)
+
+    print("\n" + "Results exported!" + "\n")
+    
+
+
+def init_ls_df():
+    return pd.DataFrame(columns=["Matrix", "Size", "Density", "Tolerance", "Method", "Relative error", "Time", "Iterations"])
+
+
+def compare_results(df, path):
     
     sns.set_theme(style="darkgrid")
 
     sns.barplot(data=df, x='Method', y='Time', hue='Tolerance', errorbar=None)
     plt.yscale('log')
     plt.tight_layout()
-    plt.savefig(RESULTS_DIR + 'barplot_method-time.png')
+    plt.savefig(path + RESULTS_DIR + 'barplot_method-time.png')
 
     plt.clf()
     sns.barplot(data=df, x='Method', y='Iterations', hue='Tolerance', errorbar=None)
     plt.yscale('linear')
     plt.tight_layout()
-    plt.savefig(RESULTS_DIR + 'barplot_method-iterations.png')
+    plt.savefig(path + RESULTS_DIR + 'barplot_method-iterations.png')
 
     plt.clf()
     sns.barplot(data=df, x='Method', y='Relative error', hue='Tolerance', errorbar=None)
     plt.tight_layout()
-    plt.savefig(RESULTS_DIR + 'barplot_method-relative_error.png')
+    plt.savefig(path + RESULTS_DIR + 'barplot_method-relative_error.png')
 
     plt.clf()
     sns.barplot(data=df.astype({'Density': float}), x='Density', y='Iterations', hue='Method', errorbar=None)
     plt.yscale('log')
     plt.xticks(rotation=90)
-    #plt.gca().set_xticklabels([f'{tick:.4f}' for tick in plt.gca().get_xticks()])
     plt.tight_layout()
-    plt.savefig(RESULTS_DIR + 'barplot_density-iterations.png')
+    plt.savefig(path + RESULTS_DIR + 'barplot_density-iterations.png')
 
     sns.set_theme(style="white")
     df_corr = df[['Size', 'Density', 'Tolerance', 'Relative error', 'Time', 'Iterations']]
@@ -66,16 +85,4 @@ def compare_results(df):
     cmap = sns.diverging_palette(230, 20, as_cmap=True)
     sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.3, center=0,
                 square=True, linewidths=.5, cbar_kws={"shrink": .5})
-    plt.savefig(RESULTS_DIR + 'heatmap.png')
-
-
-def export_results(df):
-    output_file = 'summary.csv'
-    output_dir = Path(RESULTS_DIR)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    df.to_csv(output_dir / output_file)
-
-
-def init_ls_df():
-    return pd.DataFrame(columns=["Matrix", "Size", "Density", "Tolerance", "Method", "Relative error", "Time", "Iterations"])
+    plt.savefig(path + RESULTS_DIR + 'heatmap.png')

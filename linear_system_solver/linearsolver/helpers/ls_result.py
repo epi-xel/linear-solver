@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 class LinearSystemResult:
     def __init__(self, solution, time, iterations, x_true):

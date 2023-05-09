@@ -25,7 +25,7 @@ def solve_with_each_method(A, b, x, tol, max_iter, matrix_name):
     ls3 = LinearSystemHelper(A, b, x)
     gradient_descent_res = solve(ls3, tol, update.gradient_descent, max_iter, check = False)
     print_stats(gradient_descent_res, x, "Gradient Descent")
-    df = pd.concat([df, build_result_df(A, gradient_descent_res, matrix_name, tol, "Gradient Descent")], ignore_index=True)
+    df = pd.concat([df, build_result_df(A, gradient_descent_res, matrix_name, tol, "Gradient")], ignore_index=True)
 
     ls4 = LinearSystemHelper(A, b, x, conjugate_gradient = True)
     conjugate_gradient_res = solve(ls4, tol, update.conjugate_gradient, max_iter, check = False)

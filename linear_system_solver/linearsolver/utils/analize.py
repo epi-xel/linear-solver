@@ -54,24 +54,25 @@ def compare_results(df, path):
     
     sns.set_theme(style="darkgrid")
 
-    sns.barplot(data=df, x='Method', y='Time', hue='Tolerance', errorbar=None)
+    sns.barplot(data=df, x='Method', y='Time', hue='Tolerance', errorbar=None, palette="crest")
     plt.yscale('log')
     plt.tight_layout()
     plt.savefig(path + RESULTS_DIR + 'barplot_method-time.png')
 
     plt.clf()
-    sns.barplot(data=df, x='Method', y='Iterations', hue='Tolerance', errorbar=None)
+    sns.barplot(data=df, x='Method', y='Iterations', hue='Tolerance', errorbar=None, palette="crest")
     plt.yscale('linear')
     plt.tight_layout()
     plt.savefig(path + RESULTS_DIR + 'barplot_method-iterations.png')
 
     plt.clf()
-    sns.barplot(data=df, x='Method', y='Relative error', hue='Tolerance', errorbar=None)
+    sns.barplot(data=df, x='Method', y='Relative error', hue='Tolerance', errorbar=None, palette="crest")
+    plt.yscale('log')
     plt.tight_layout()
     plt.savefig(path + RESULTS_DIR + 'barplot_method-relative_error.png')
 
     plt.clf()
-    sns.barplot(data=df.astype({'Density': float}), x='Density', y='Iterations', hue='Method', errorbar=None)
+    sns.barplot(data=df.astype({'Density': float}), x='Density', y='Iterations', hue='Method', errorbar=None, palette="crest")
     plt.yscale('log')
     plt.xticks(rotation=90)
     plt.tight_layout()
@@ -80,7 +81,7 @@ def compare_results(df, path):
     sns.set_theme(style="white")
     df_corr = df[['Size', 'Density', 'Tolerance', 'Relative error', 'Time', 'Iterations']]
     corr = df_corr.corr()
-    mask = np.triu(np.ones_like(corr, dtype=bool))
+    mask = np.triu(np.ones_like(corr, dtype=bool), 1)
     f, ax = plt.subplots(figsize=(11, 9))
     cmap = sns.diverging_palette(230, 20, as_cmap=True)
     sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.3, center=0,

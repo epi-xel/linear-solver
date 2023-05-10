@@ -84,6 +84,5 @@ def compare_results(df, path):
     mask = np.triu(np.ones_like(corr, dtype=bool), 1)
     f, ax = plt.subplots(figsize=(11, 9))
     cmap = sns.diverging_palette(230, 20, as_cmap=True)
-    sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.3, center=0,
-                square=True, linewidths=.5, cbar_kws={"shrink": .5})
+    sns.heatmap(corr, mask=mask, cmap=cmap, vmax=1, vmin=-1, center=0, square=True, linewidths=.5, cbar_kws={"shrink": .5}, annot=True)
     plt.savefig(path + RESULTS_DIR + 'heatmap.png')

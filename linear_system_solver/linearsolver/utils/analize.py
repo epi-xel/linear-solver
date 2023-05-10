@@ -78,16 +78,23 @@ def compare_results(df, path):
     plt.savefig(path + RESULTS_DIR + 'barplots.png')
 
     sns.set_theme(style="white")
-    df_corr = df[['Size', 'Density', 'Tolerance', 'Relative error', 'Time', 'Iterations']]
-    corr = df_corr.corr()
-    mask = np.triu(np.ones_like(corr, dtype=bool), 1)
-    f, ax = plt.subplots(figsize=(11, 9))
-    f.suptitle('Correlation matrix', fontsize=18)
+
+    methods = df['Method'].unique()
+
+    fig, axes = plt.subplots(2, 2, figsize=(30, 20))
+    fig.suptitle('Correlation matrix', fontsize=40)
     cmap = sns.diverging_palette(230, 20, as_cmap=True)
-    sns.set(font_scale=1.4)
-    ax.tick_params(axis='both', which='major', labelsize=14)
-    heatmap = sns.heatmap(corr, mask=mask, cmap=cmap, vmax=1, vmin=-1, center=0, square=True, linewidths=.5, cbar_kws={"shrink": .5}, annot=True)
-    heatmap.set_xticklabels(heatmap.get_xticklabels(), rotation=90, horizontalalignment='right')
-    heatmap.set_yticklabels(heatmap.get_yticklabels(), rotation=0, horizontalalignment='right')
+    sns.set(font_scale=1.6)
+
+    for i, method in enumerate(methods):
+        grouped = df.loc[df['Method'] == method]
+        axes[i//2, i%2].set_title(method, fontsize=30)
+        corr = grouped[['Size', 'Density', 'Tolerance', 'Relative error', 'Time', 'Iterations']].corr()
+        mask = np.triu(np.ones_like(corr, dtype=bool), 1)
+        heatmap = sns.heatmap(corr, mask=mask, cmap=cmap, vmax=1, vmin=-1, center=0, square=True, 
+                            linewidths=.5, cbar_kws={"shrink": .5}, annot=True, ax=axes[i//2, i%2])
+        heatmap.set_xticklabels(heatmap.get_xticklabels(), fontsize = 20, rotation=45, horizontalalignment='right')
+        heatmap.set_yticklabels(heatmap.get_yticklabels(), fontsize = 20, rotation=0, horizontalalignment='right')
+
     plt.tight_layout()
     plt.savefig(path + RESULTS_DIR + 'heatmap.png')

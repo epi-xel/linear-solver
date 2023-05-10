@@ -54,29 +54,28 @@ def compare_results(df, path):
     
     sns.set_theme(style="darkgrid")
 
-    sns.barplot(data=df, x='Method', y='Time', hue='Tolerance', errorbar=None, palette="crest")
-    plt.yscale('log')
-    plt.tight_layout()
-    plt.savefig(path + RESULTS_DIR + 'barplot_method-time.png')
+    fig, axes = plt.subplots(2, 2)
+    fig.suptitle('Barplots of the methods execution time, iterations and relative error')
+    fig.set_size_inches(15, 15)
 
-    plt.clf()
-    sns.barplot(data=df, x='Method', y='Iterations', hue='Tolerance', errorbar=None, palette="crest")
-    plt.yscale('linear')
-    plt.tight_layout()
-    plt.savefig(path + RESULTS_DIR + 'barplot_method-iterations.png')
+    ax1 = sns.barplot(data=df, ax=axes[0, 0], x='Method', y='Time', hue='Tolerance', errorbar=None, palette="crest")
+    ax1.set_yscale('log')
 
-    plt.clf()
-    sns.barplot(data=df, x='Method', y='Relative error', hue='Tolerance', errorbar=None, palette="crest")
-    plt.yscale('log')
-    plt.tight_layout()
-    plt.savefig(path + RESULTS_DIR + 'barplot_method-relative_error.png')
+    ax2 = sns.barplot(data=df, ax=axes[0, 1], x='Method', y='Iterations', hue='Tolerance', errorbar=None, palette="crest")
+    ax2.set_yscale('log')
 
-    plt.clf()
-    sns.barplot(data=df.astype({'Density': float}), x='Density', y='Iterations', hue='Method', errorbar=None, palette="crest")
-    plt.yscale('log')
-    plt.xticks(rotation=90)
+    ax3 = sns.barplot(data=df, ax=axes[1, 0], x='Method', y='Relative error', hue='Tolerance', errorbar=None, palette="crest")
+    ax3.set_yscale('log')
+
+    ax4 = sns.barplot(data=df.astype({'Density': float}), ax=axes[1, 1], x='Density', y='Iterations', hue='Method', errorbar=None, palette="viridis")
+    ax4.set_yscale('log')
+
+    ticks = ax4.get_xticklabels()
+    ticks = [t.get_text()[:6] for t in ticks]
+    ax4.set_xticklabels(ticks)
+
     plt.tight_layout()
-    plt.savefig(path + RESULTS_DIR + 'barplot_density-iterations.png')
+    plt.savefig(path + RESULTS_DIR + 'barplots.png')
 
     sns.set_theme(style="white")
     df_corr = df[['Size', 'Density', 'Tolerance', 'Relative error', 'Time', 'Iterations']]

@@ -38,9 +38,9 @@ fig, axes = plt.subplots(2, 2, figsize=(10, 10))
 fig.suptitle('Barplots of the methods iterations for different densities')
 for i, method in enumerate(methods):
     grouped = df.loc[df['Method'] == method]
-    axes[i//2, i%2].set_title(method, fontsize=15)
+    axes[i//2, i%2].set_title(method)
     barplot = sns.barplot(data=grouped, ax=axes[i//2, i%2], x='Density', 
-                      y='Iterations', errorbar=None, palette="viridis")
+                      y='Iterations', errorbar=None, palette="viridis", width=0.6)
     barplot.set_yscale('log')
     ticks = barplot.get_xticklabels()
     ticks = [t.get_text()[:6] for t in ticks]
@@ -54,9 +54,9 @@ fig, axes = plt.subplots(2, 2, figsize=(10, 10))
 fig.suptitle('Barplots of the methods execution time for different densities')
 for i, method in enumerate(methods):
     grouped = df.loc[df['Method'] == method]
-    axes[i//2, i%2].set_title(method, fontsize=15)
+    axes[i//2, i%2].set_title(method)
     barplot = sns.barplot(data=grouped, ax=axes[i//2, i%2], x='Density', 
-                      y='Time', errorbar=None, palette="viridis")
+                      y='Time', errorbar=None, palette="viridis", width=0.6)
     barplot.set_yscale('log')
     ticks = barplot.get_xticklabels()
     ticks = [t.get_text()[:6] for t in ticks]

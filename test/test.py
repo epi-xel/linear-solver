@@ -27,20 +27,45 @@ ax3 = sns.barplot(data=df, ax=axes[2], x='Method', y='Relative error', hue='Tole
                   errorbar=None, palette="crest")
 ax3.set_yscale('log')
 
-#ax4 = sns.barplot(data=df.astype({'Density': float}), ax=axes[1, 1], x='Density', 
-#                  y='Iterations', hue='Method', errorbar=None, palette="viridis")
-#ax4.set_yscale('log')
-
-#ticks = ax4.get_xticklabels()
-#ticks = [t.get_text()[:6] for t in ticks]
-#ax4.set_xticklabels(ticks)
 
 plt.tight_layout()
-plt.savefig('test/barplot.png')
+plt.savefig('test/time-iterations-error_barplots.png')
 
-sns.set_theme(style="white")
 
 methods = df['Method'].unique()
+
+fig, axes = plt.subplots(2, 2, figsize=(10, 10))
+fig.suptitle('Barplots of the methods iterations for different densities')
+for i, method in enumerate(methods):
+    grouped = df.loc[df['Method'] == method]
+    axes[i//2, i%2].set_title(method, fontsize=15)
+    barplot = sns.barplot(data=grouped, ax=axes[i//2, i%2], x='Density', 
+                      y='Iterations', errorbar=None, palette="viridis")
+    barplot.set_yscale('log')
+    ticks = barplot.get_xticklabels()
+    ticks = [t.get_text()[:6] for t in ticks]
+    barplot.set_xticklabels(ticks)
+
+plt.tight_layout()
+plt.savefig('test/density-iterations_barplots.png')
+
+
+fig, axes = plt.subplots(2, 2, figsize=(10, 10))
+fig.suptitle('Barplots of the methods execution time for different densities')
+for i, method in enumerate(methods):
+    grouped = df.loc[df['Method'] == method]
+    axes[i//2, i%2].set_title(method, fontsize=15)
+    barplot = sns.barplot(data=grouped, ax=axes[i//2, i%2], x='Density', 
+                      y='Time', errorbar=None, palette="viridis")
+    barplot.set_yscale('log')
+    ticks = barplot.get_xticklabels()
+    ticks = [t.get_text()[:6] for t in ticks]
+    barplot.set_xticklabels(ticks)
+
+plt.tight_layout()
+plt.savefig('test/density-time_barplots.png')
+
+sns.set_theme(style="white")
 
 fig, axes = plt.subplots(2, 2, figsize=(30, 20))
 fig.suptitle('Correlation matrix', fontsize=40)

@@ -52,30 +52,81 @@ def init_ls_df():
 
 def compare_results(df, path):
     
+    general_barplots(df, path)
+    density_iterations_barplot(df, path)
+    density_time_barplot(df, path)
+    heatmap(df, path)
+
+
+def general_barplots(df, path):
+
     sns.set_theme(style="darkgrid")
 
-    fig, axes = plt.subplots(2, 2)
+    fig, axes = plt.subplots(1, 3)
     fig.suptitle('Barplots of the methods execution time, iterations and relative error')
-    fig.set_size_inches(15, 15)
+    fig.set_size_inches(20, 6)
 
-    ax1 = sns.barplot(data=df, ax=axes[0, 0], x='Method', y='Time', hue='Tolerance', errorbar=None, palette="crest")
+    ax1 = sns.barplot(data=df, ax=axes[0], x='Method', y='Time', hue='Tolerance', 
+                    errorbar=None, palette="crest")
     ax1.set_yscale('log')
 
-    ax2 = sns.barplot(data=df, ax=axes[0, 1], x='Method', y='Iterations', hue='Tolerance', errorbar=None, palette="crest")
+    ax2 = sns.barplot(data=df, ax=axes[1], x='Method', y='Iterations', hue='Tolerance', 
+                    errorbar=None, palette="crest")
     ax2.set_yscale('log')
 
-    ax3 = sns.barplot(data=df, ax=axes[1, 0], x='Method', y='Relative error', hue='Tolerance', errorbar=None, palette="crest")
+    ax3 = sns.barplot(data=df, ax=axes[2], x='Method', y='Relative error', hue='Tolerance', 
+                    errorbar=None, palette="crest")
     ax3.set_yscale('log')
 
-    ax4 = sns.barplot(data=df.astype({'Density': float}), ax=axes[1, 1], x='Density', y='Iterations', hue='Method', errorbar=None, palette="viridis")
-    ax4.set_yscale('log')
+    plt.tight_layout()
+    plt.savefig(path + RESULTS_DIR + 'iterations-time-error_barplots.png')
 
-    ticks = ax4.get_xticklabels()
-    ticks = [t.get_text()[:6] for t in ticks]
-    ax4.set_xticklabels(ticks)
+
+def density_iterations_barplot(df, path):
+
+    sns.set_theme(style="darkgrid")
+
+    methods = df['Method'].unique()
+
+    fig, axes = plt.subplots(2, 2, figsize=(10, 10))
+    fig.suptitle('Barplots of the methods iterations for different densities')
+    for i, method in enumerate(methods):
+        grouped = df.loc[df['Method'] == method]
+        axes[i//2, i%2].set_title(method, fontsize=15)
+        barplot = sns.barplot(data=grouped, ax=axes[i//2, i%2], x='Density', 
+                        y='Iterations', errorbar=None, palette="viridis")
+        barplot.set_yscale('log')
+        ticks = barplot.get_xticklabels()
+        ticks = [t.get_text()[:6] for t in ticks]
+        barplot.set_xticklabels(ticks)
 
     plt.tight_layout()
-    plt.savefig(path + RESULTS_DIR + 'barplots.png')
+    plt.savefig(path + RESULTS_DIR + 'density-iterations_barplots.png')
+
+
+def density_time_barplot(df, path):
+
+    sns.set_theme(style="darkgrid")
+
+    methods = df['Method'].unique()
+
+    fig, axes = plt.subplots(2, 2, figsize=(10, 10))
+    fig.suptitle('Barplots of the methods execution time for different densities')
+    for i, method in enumerate(methods):
+        grouped = df.loc[df['Method'] == method]
+        axes[i//2, i%2].set_title(method, fontsize=15)
+        barplot = sns.barplot(data=grouped, ax=axes[i//2, i%2], x='Density', 
+                        y='Time', errorbar=None, palette="viridis")
+        barplot.set_yscale('log')
+        ticks = barplot.get_xticklabels()
+        ticks = [t.get_text()[:6] for t in ticks]
+        barplot.set_xticklabels(ticks)
+    
+    plt.tight_layout()
+    plt.savefig(path + RESULTS_DIR + 'density-time_barplots.png')
+
+
+def heatmap(df, path):
 
     sns.set_theme(style="white")
 

@@ -9,8 +9,8 @@ from linearsolver.utils.constants import RESULTS_DIR
 def analize_matrix(A):
     shape = A.tocsr().get_shape()
     nonzero = A.tocsr().count_nonzero()
-    size = shape[0] * shape[1] 
-    density = nonzero / size
+    size = shape[0]
+    density = nonzero / (shape[0] * shape[1])
     return size, density
 
 
@@ -38,13 +38,12 @@ def export_results(df, path):
     output_dir = Path(path + RESULTS_DIR)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    df.to_csv(output_dir / output_file)
+    df.to_csv(output_dir / output_file, index=False)
 
     compare_results(df, path)
 
     print("\n" + "Results exported!" + "\n")
     
-
 
 def init_ls_df():
     return pd.DataFrame(columns=["Matrix", "Size", "Density", "Tolerance", "Method", "Relative error", "Time", "Iterations"])

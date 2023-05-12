@@ -86,20 +86,18 @@ plt.tight_layout()
 plt.savefig('test/heatmaps.png')
 
 
-
 df_m = df[['Matrix', 'Method', 'Time', 'Iterations', 'Relative error', 'Tolerance']]
 df_info_matrix = df[['Matrix', 'Size', 'Density']].drop_duplicates().reset_index(drop=True)
+df_info_matrix.to_csv('test/df_info_matrix.csv', index=False)
 
-# group df by matrix and split it into 4 dataframes except 
+
 df_grouped = df_m.groupby('Matrix')
-df_grouped_list = [df_grouped.get_group(x) for x in df_grouped.groups]
+for name, group in df_grouped:
+    group = group.drop(columns=['Matrix'])
+    group.to_csv('test/matrix-{}.csv'.format(name), index=False)
 
-#df_density_iter = pd.DataFrame(columns=['Method', 'Density', 'Iterations'])
 
-corr_method = df.groupby('Method')[['Density', 'Iterations']].corr()
-print(corr_method)
 
-#df_grouped_method = df_density_iter.groupby('Method')
 
 
 

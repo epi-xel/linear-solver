@@ -1,5 +1,6 @@
 from scipy.io import mmread
 from pathlib import Path
+from linearsolver.helpers.df_helper import ResultsStats
 import numpy as np
 import linearsolver.methods.big_ops as helper
 import linearsolver.utils.constants as const
@@ -34,7 +35,7 @@ def read_and_solve(path, tols):
         A = mmread(path)
     except Exception as e:
         print('Unable to read matrix: check path or file format')
-        return
+        exit(0)
 
     # Test methods with x = [1, 1, ... 1]
     x = np.ones(A.shape[1])
@@ -50,22 +51,22 @@ def run_all(path, tols, folder):
         path += '/'
     data = sorted(glob.glob(path + '*.mtx'))
 
-    df = analize.init_ls_df()
+    stats = ResultsStats()
 
     for m in data:
-        df1 = read_and_solve(m, tols)
-        if df1 is not None:
-            df = pd.concat([df, df1], ignore_index=True)
+        stats0 = read_and_solve(m, tols)
+        if stats0 is not None:
+            stats.merge_stats(stats0)
 
     #export_results(df)
     if(folder is not None):
-        analize.export_results(df, folder)
+        analize.export_results(stats, folder)
         
 
 def input_matrix(matrix_path, tols, folder):
-    df = read_and_solve(matrix_path, tols)
+    stats = read_and_solve(matrix_path, tols)
     if(folder is not None):
-        analize.export_results(df, folder)
+        analize.export_results(stats, folder)
 
 
 # Parse command line arguments

@@ -30,9 +30,11 @@ def build_result_df(A, res, name, tol, method):
     return df
 
 
-def export_results(df, path):
+def export_results(stats, path):
 
     print("\n" + "Exporting results...")
+
+    df = stats.get_stats_df()
 
     output_file = 'summary.csv'
     output_dir = Path(path + RESULTS_DIR)
@@ -45,8 +47,8 @@ def export_results(df, path):
     print("\n" + "Results exported!" + "\n")
     
 
-def init_ls_df():
-    return pd.DataFrame(columns=["Matrix", "Size", "Density", "Tolerance", "Method", "Relative error", "Time", "Iterations"])
+#def init_ls_df():
+#    return pd.DataFrame(columns=["Matrix", "Size", "Density", "Tolerance", "Method", "Relative error", "Time", "Iterations"])
 
 
 def compare_results(df, path):

@@ -46,11 +46,7 @@ def export_results(stats, path):
 
     print("\n" + "Results exported!" + "\n")
     
-
-#def init_ls_df():
-#    return pd.DataFrame(columns=["Matrix", "Size", "Density", "Tolerance", "Method", "Relative error", "Time", "Iterations"])
-
-
+    
 def compare_results(df, path):
     
     general_barplots(df, path)

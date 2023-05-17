@@ -1,11 +1,9 @@
 from scipy.io import mmread
-from pathlib import Path
 from linearsolver.helpers.df_helper import ResultsStats
 import numpy as np
 import linearsolver.methods.big_ops as helper
 import linearsolver.utils.constants as const
 import linearsolver.utils.analize as analize
-import pandas as pd
 import argparse
 import glob, os
 

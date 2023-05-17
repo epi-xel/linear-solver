@@ -1,4 +1,3 @@
-import numpy as np
 import linearsolver.utils.constants as const
 
 class bcolors:

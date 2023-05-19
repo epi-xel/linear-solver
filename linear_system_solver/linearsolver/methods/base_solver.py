@@ -3,7 +3,6 @@ from time import time
 from linearsolver.utils.print_utils import bcolors
 from linearsolver.helpers.ls_result import LinearSystemResult
 from sksparse.cholmod import cholesky
-# import sksparse.cholmod as cholmod
 
 
 # Check if the algorithm has converged

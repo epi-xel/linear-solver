@@ -3,7 +3,6 @@ from linearsolver.methods.base_solver import solve
 from linearsolver.methods.base_solver import checks
 from linearsolver.utils.print_utils import print_stats
 from linearsolver.utils.print_utils import bcolors
-from linearsolver.utils.analize import build_result_df
 from linearsolver.helpers.df_helper import ResultsStats
 import linearsolver.methods.update as update
 import linearsolver.utils.constants as const 

@@ -7,7 +7,7 @@ import os
 
 print(os.getcwd())
 
-df = pd.read_csv('test/summary.csv')
+df = pd.read_csv('test/input/summary.csv')
 
 sns.set_theme(style="darkgrid")
 
@@ -29,7 +29,7 @@ ax3.set_yscale('log')
 
 
 plt.tight_layout()
-plt.savefig('test/time-iterations-error_barplots.png')
+plt.savefig('test/output/time-iterations-error_barplots.png')
 
 
 methods = df['Method'].unique()
@@ -47,7 +47,7 @@ for i, method in enumerate(methods):
     barplot.set_xticklabels(ticks)
 
 plt.tight_layout()
-plt.savefig('test/density-iterations_barplots.png')
+plt.savefig('test/output/density-iterations_barplots.png')
 
 
 fig, axes = plt.subplots(2, 2, figsize=(10, 10))
@@ -63,7 +63,7 @@ for i, method in enumerate(methods):
     barplot.set_xticklabels(ticks)
 
 plt.tight_layout()
-plt.savefig('test/density-time_barplots.png')
+plt.savefig('test/output/density-time_barplots.png')
 
 sns.set_theme(style="white")
 
@@ -83,7 +83,7 @@ for i, method in enumerate(methods):
     heatmap.set_yticklabels(heatmap.get_yticklabels(), fontsize = 20, rotation=0, horizontalalignment='right')
 
 plt.tight_layout()
-plt.savefig('test/heatmaps.png')
+plt.savefig('test/output/heatmaps.png')
 
 
 df_m = df[['Matrix', 'Method', 'Time', 'Iterations', 'Relative error', 'Tolerance']]
@@ -94,7 +94,7 @@ df_info_matrix.to_csv('test/df_info_matrix.csv', index=False)
 df_grouped = df_m.groupby('Matrix')
 for name, group in df_grouped:
     group = group.drop(columns=['Matrix'])
-    group.to_csv('test/matrix-{}.csv'.format(name), index=False)
+    group.to_csv('test/output/matrix-{}.csv'.format(name), index=False)
 
 
 

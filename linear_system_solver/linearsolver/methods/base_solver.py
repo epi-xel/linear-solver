@@ -5,7 +5,15 @@ from linearsolver.utils.print_utils import bcolors
 from linearsolver.helpers.ls_result import LinearSystemResult
 from linearsolver.utils.constants import MAX_ITER
 from linearsolver.helpers.ls_helper import LinearSystemHelper
+from enum import Enum
 from sksparse.cholmod import cholesky
+
+
+class Method(Enum):
+    JACOBI = "jacobi"
+    GAUSS_SEIDEL = "gauss-seidel"
+    GRADIENT= "gradient"
+    CONJUGATE_GRADIENT = "conjugate-gradient"
 
 
 # Check if the algorithm has converged
@@ -18,7 +26,7 @@ def init_solver(A, b, x, method, check):
     ls = None
     update = None
 
-    if(method == "conjugate-gradient"):
+    if(method == Method.CONJUGATE_GRADIENT):
         ls = LinearSystemHelper(A, b, x, conjugate_gradient = True)
     else:
         ls = LinearSystemHelper(A, b, x)
@@ -27,17 +35,14 @@ def init_solver(A, b, x, method, check):
         if(checks(ls.A, ls.b) == -1):
             return
         
-    if(method == "jacobi"):
+    if(method == Method.JACOBI):
         update = upd.jacobi
-    elif(method == "gauss-seidel"):
+    elif(method == Method.GAUSS_SEIDEL):
         update = upd.gauss_seidel
-    elif(method == "gradient"):
-        update = upd.gradient_descent
-    elif(method == "conjugate-gradient"):
+    elif(method == Method.GRADIENT):
+        update = upd.gradient
+    elif(method == Method.CONJUGATE_GRADIENT):
         update = upd.conjugate_gradient
-    else:
-        print(bcolors.FAIL + "Error: Method " + method + " not found" + bcolors.ENDC)
-        return
         
     return ls, update
 

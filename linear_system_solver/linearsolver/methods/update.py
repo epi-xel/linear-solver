@@ -32,7 +32,7 @@ def gauss_seidel(ls):
 
 
 # Compute the gradient descend update
-def gradient_descent(ls):
+def gradient(ls):
     r = ls.b - ls.A.dot(ls.x)
     alpha = np.transpose(r).dot(r) / np.transpose(r).dot(ls.A.dot(r))
     ls.x = ls.x + alpha * r

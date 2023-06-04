@@ -49,6 +49,10 @@ def run_all(path, tols, folder):
         path += '/'
     data = sorted(glob.glob(path + '*.mtx'))
 
+    if(len(data) == 0):
+        print('No .mtx files found in ' + path)
+        exit(0)
+
     stats = ResultsStats()
 
     for m in data:

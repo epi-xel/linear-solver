@@ -1,10 +1,8 @@
-from linearsolver.helpers.ls_helper import LinearSystemHelper
 from linearsolver.methods.base_solver import solve
 from linearsolver.methods.base_solver import checks
 from linearsolver.utils.print_utils import print_stats
 from linearsolver.utils.print_utils import bcolors
 from linearsolver.helpers.df_helper import ResultsStats
-import linearsolver.methods.update as update
 import linearsolver.utils.constants as const 
 
 
@@ -13,23 +11,19 @@ def solve_with_each_method(A, b, x, tol, max_iter, matrix_name):
 
     stats = ResultsStats()
 
-    ls1 = LinearSystemHelper(A, b, x)
-    jacobi_res = solve(ls1, tol, update.jacobi, max_iter, check = False)
+    jacobi_res = solve(A, b, x, tol, "jacobi", max_iter = max_iter, check = False)
     print_stats(jacobi_res, x, "Jacobi")
     stats.add_stats(A, jacobi_res, matrix_name, tol, "Jacobi")
 
-    ls2 = LinearSystemHelper(A, b, x)
-    gauss_seidel_res = solve(ls2, tol, update.gauss_seidel, max_iter, check = False)
+    gauss_seidel_res = solve(A, b, x, tol, "gauss-seidel", max_iter = max_iter, check = False)
     print_stats(gauss_seidel_res, x, "Gauss-Seidel")
     stats.add_stats(A, gauss_seidel_res, matrix_name, tol, "Gauss-Seidel")
 
-    ls3 = LinearSystemHelper(A, b, x)
-    gradient_descent_res = solve(ls3, tol, update.gradient_descent, max_iter, check = False)
+    gradient_descent_res = solve(A, b, x, tol, "gradient", max_iter = max_iter, check = False)
     print_stats(gradient_descent_res, x, "Gradient Descent")
     stats.add_stats(A, gradient_descent_res, matrix_name, tol, "Gradient Descent")
 
-    ls4 = LinearSystemHelper(A, b, x, conjugate_gradient = True)
-    conjugate_gradient_res = solve(ls4, tol, update.conjugate_gradient, max_iter, check = False)
+    conjugate_gradient_res = solve(A, b, x, tol, "conjugate-gradient", max_iter = max_iter, check = False)
     print_stats(conjugate_gradient_res, x, "Conjugate Gradient", True)
     stats.add_stats(A, conjugate_gradient_res, matrix_name, tol, "Conjugate Gradient")
 

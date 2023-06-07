@@ -1,7 +1,7 @@
 from scipy.io import mmread
 from linearsolver.helpers.df_helper import ResultsStats
 import numpy as np
-import linearsolver.methods.big_ops as helper
+import linearsolver.methods.methods_collector as helper
 import linearsolver.utils.constants as const
 import linearsolver.utils.analize as analize
 import argparse

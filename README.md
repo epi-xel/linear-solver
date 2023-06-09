@@ -103,7 +103,7 @@ tre sottomoduli principali:
     da *facade*, raccogliendo una serie di funzioni ausiliarie che
     permettono l'esecuzione di tutti i metodi per un singolo input con
     una certa tolleranza e, utilizzando `print_utils` (cfr. sezione
-    [3.1.3](#sec:utils){reference-type="ref" reference="sec:utils"})
+    [3.1.3](#sec:utils))
     stampa a schermo i risultati.
 
 Si approfondiscono di seguito i primi due moduli dedicati al cuore vero
@@ -146,7 +146,7 @@ relativamente a Gauss-Seidel si è implementata a parte nella libreria
 una funzione che eseguisse la sostituzione in avanti, passo fondamentale
 in ogni aggiornamento.
 
-### Utils {#sec:utils}
+### Utils
 
 I moduli di *utility* sono:
 
@@ -172,10 +172,10 @@ Una volta implementata la libreria, si è voluto produrre un eseguibile
 che avesse un'interfaccia intuitiva da linea di comando. Eseguendo il
 file con il comando `–help` (oppure se non si inserisce nulla) si
 ottiene l'output rappresentato nella figura
-[1](#fig:cli-1){reference-type="ref" reference="fig:cli-1"}.
+[1].
 
 ![Interfaccia da linea di comando del
-programma.](images/program-cli.png){#fig:cli-1 width="\\textwidth"}
+programma.](images/program-cli.png)
 
 Da linea di comando è pertanto possibile inserire una o più matrici con
 diverse tolleranze e ottenere un output sia sul terminale, sia su file,
@@ -188,11 +188,9 @@ sovrascrivere il vettore $x$ o $b$ con qualsiasi vettore desiderato.
 
 Per ciascun sistema lineare in input viene calcolata la soluzione con
 ciascuna tolleranza e ciascun metodo, avvalendosi del modulo `big_ops`
-descritto nella sezione [3.1.2](#sec:methods){reference-type="ref"
-reference="sec:methods"}. Durante l'esecuzione degli algoritmi vengono
+descritto nella sezione [3.1.2](#sec:methods). Durante l'esecuzione degli algoritmi vengono
 stampati a schermo di volta in volta i risultati, come esemplificato
-dall'immagine [2](#fig:cli-2){reference-type="ref"
-reference="fig:cli-2"}.
+dall'immagine [2](#fig:cli-2).
 
 ![Output su terminale dopo l'esecuzione di `spa1.mtx` con tolleranza
 0.0001.](images/output-cli.png){#fig:cli-2}
@@ -204,7 +202,7 @@ test `spa1.mtx`, `spa2.mtx`, `vem1.mtx` e `vem2.mtx`. Per analizzare i
 risultati dell'implementazione dei metodi è stato necessario prima di
 tutto ottenere una panoramica delle proprietà di ciascuna matrice, come
 si può osservare nella tabella
-[1](#table:mat-stats){reference-type="ref" reference="table:mat-stats"}.
+[1](#table:mat-stats).
 
 | \textbf{Matrix} | \textbf{Size} | \textbf{Density} |
 |-----------------|---------------|------------------|
@@ -214,17 +212,13 @@ si può osservare nella tabella
 | vem2.mtx        | 2601          | 0.003137         |
 
 L'esecuzione degli algoritmi implementati ha poi prodotto i risultati
-rappresentati nelle tabelle [2](#table:spa1-stats){reference-type="ref"
-reference="table:spa1-stats"},
-[3](#table:spa2-stats){reference-type="ref"
-reference="table:spa2-stats"},
-[4](#table:vem1-stats){reference-type="ref"
-reference="table:vem1-stats"} e
-[5](#table:vem2-stats){reference-type="ref"
-reference="table:vem2-stats"} divise per matrici.
+rappresentati nelle tabelle [2](#table:spa1-stats),
+[3](#table:spa2-stats),
+[4](#table:vem1-stats) e
+[5](#table:vem2-stats) divise per matrici.
 
 Per un confronto più immediato si osservino i grafici a barre in figura
-[3](#fig:tie-b){reference-type="ref" reference="fig:tie-b"}, dove
+[3](#fig:tie-b), dove
 vengono messi a confronto i metodi con il numero di iterazioni, il tempo
 impiegato e l'errore relativo, divisi per tolleranza. Si noti che in
 tutti i grafici a barre qui presentati la scala dell'asse y è
@@ -232,8 +226,7 @@ logaritmica.
 
 ![Grafici a barre del tempo di esecuzione, iterazioni ed errore relativo
 di ciascun
-metodo.](images/time-iterations-error_barplots.png){#fig:tie-b
-width="\\textwidth"}
+metodo.](images/time-iterations-error_barplots.png)
 
 Banalmente si può vedere che diminuendo la tolleranza cresce
 esponenzialmente il tempo di esecuzione, il numero di iterazioni e
@@ -252,10 +245,10 @@ algoritmi, osservando i dati nelle tabelle si può intuire una
 correlazione tra la dimensione e la densità della matrice con il tempo e
 il numero di iterazioni a seconda dei vari metodi impiegati. Confermiamo
 questi sospetti osservando le matrici di correlazione in figura
-[4](#fig:cormat){reference-type="ref" reference="fig:cormat"}.
+[4](#fig:cormat).
 
 ![Matrici di correlazione dei risultati di ciascun
-metodo.](images/heatmaps.png){#fig:cormat}
+metodo.](images/heatmaps.png)
 
 #### Jacobi
 
@@ -286,15 +279,13 @@ tra dimensione e tempo. Anche il gradiente coniugato è pertanto adatto a
 matrici poco dense e non di grandi dimensioni.
 
 Le osservazioni fatte qui sopra vengono mostrate intuitivamente dai
-grafici a barre nelle figure [5](#fig:di-b){reference-type="ref"
-reference="fig:di-b"} e [6](#fig:dt-b){reference-type="ref"
-reference="fig:dt-b"}.
+grafici a barre nelle figure [5](#fig:di-b) e [6](#fig:dt-b).
 
 ![Grafici a barre del confronto tra densità e iterazioni per ciascun
-metodo.](images/density-iterations_barplots.png){#fig:di-b}
+metodo.](images/density-iterations_barplots.png)
 
 ![Grafici a barre del confronto tra densità e tempo per ciascun
-metodo.](images/density-time_barplots.png){#fig:dt-b}
+metodo.](images/density-time_barplots.png)
 
 | \textbf{Method}    | \textbf{Tolerance} | \textbf{Time (sec)} | \textbf{Iterations} | \textbf{Relative error} |
 |--------------------|--------------------|---------------------|---------------------|-------------------------|

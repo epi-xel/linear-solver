@@ -7,10 +7,6 @@ fornisca anche una serie di *utility* per aiutare la raccolta di
 statistiche, la creazione di grafici, la stampa a schermo e il
 riutilizzo di codice.
 
-La libreria è consultabile al repository
-[`epi-xel/linear-solver`](https://github.com/epi-xel/linear-solver) su
-GitHub.
-
 # Tecnologie utilizzate
 
 Si è scelto di utilizzare **Python** come linguaggio di programmazione
@@ -38,21 +34,23 @@ l'implementazione vengono descritte di seguito:
 Il progetto si compone di due parti: una libreria e un eseguibile con
 un'interfaccia da linea di comando.
 
-## Libreria `linearsolver`
+## Libreria [linearsolver](https://github.com/epi-xel/linear-solver/tree/main/linear_system_solver/linearsolver)
 
 Data la complessità dell'idea progettuale, si è voluta strutturare la
 libreria in tre distinti moduli principali, ciascuno di essi contenente
 sottomoduli più specifici:
 
-1.  **Helpers**: modulo dedicato alla definizione di classi di oggetti
+1.  [**Helpers**](https://github.com/epi-xel/linear-solver/tree/main/linear_system_solver/linearsolver/helpers):
+    modulo dedicato alla definizione di classi di oggetti
     utilizzati per supportare/aiutare l'esecuzione di altri metodi
 
-2.  **Methods**: modulo che implementa gli algoritmi veri e propri per
-    la risoluzione dei sistemi lineari
+3.  [**Methods**](https://github.com/epi-xel/linear-solver/tree/main/linear_system_solver/linearsolver/methods):
+    modulo che implementa gli algoritmi veri e propri per la risoluzione
+    dei sistemi lineari
 
-3.  **Utils**: modulo adibito all'implementazione di funzioni di varia
-    natura, come per la stampa a schermo dei risultati e l'analisi di
-    questi ultimi
+5.  [**Utils**](https://github.com/epi-xel/linear-solver/tree/main/linear_system_solver/linearsolver/utils):
+    modulo adibito all'implementazione di funzioni di varia natura, come
+    per la stampa a schermo dei risultati e l'analisi di questi ultimi
 
 Si è cercato inoltre di coniugare la flessibilità di Python per il
 calcolo numerico e l'implementazione di classi di oggetti focalizzati al
@@ -68,18 +66,21 @@ più livelli di astrazione.
 Tra i sottomoduli qui presenti, le classi di oggetti più interessanti
 che vengono definite sono:
 
--   `LinearSystemHelper`: classe di oggetti che permette la
+-   [LinearSystemHelper](https://github.com/epi-xel/linear-solver/blob/main/linear_system_solver/linearsolver/helpers/ls_helper.py):
+    classe di oggetti che permette la
     memorizzazione di alcune variabili utili durante l'esecuzione dei
     metodi per la risoluzione dei sistemi, come la matrice $A$, il
     vettore $b$, il vettore soluzione $x$, il vettore soluzione esatta
     $x_{true}$ ed eventuali variabili specifiche per il metodo chiamato.
 
--   `LinearSystemResult`: classe di oggetti per l'incapsulamento dei
+-   [LinearSystemResult](https://github.com/epi-xel/linear-solver/blob/main/linear_system_solver/linearsolver/helpers/ls_result.py):
+    classe di oggetti per l'incapsulamento dei
     risultati ottenuti dagli algoritmi di risoluzione; in particolar
     modo viene salvato il vettore soluzione, il tempo di esecuzione, il
     numero di iterazioni e l'errore relativo.
 
--   `ResultsStats`: classe di oggetti che si comporta similmente ad un
+-   [ResultStats](https://github.com/epi-xel/linear-solver/blob/main/linear_system_solver/linearsolver/helpers/df_helper.py):
+    classe di oggetti che si comporta similmente ad un
     *dataframe* per la memorizzazione delle statistiche sui risultati,
     contenente alcuni metodi che permettono l'aggiunta di ulteriori
     statistiche o operare la fusione con un altro oggetto della stessa
@@ -93,13 +94,16 @@ che vengono definite sono:
 Volendo applicare il design pattern *stretegy*, questo modulo contiene
 tre sottomoduli principali:
 
--   `base_solver`: data la struttura comune di ciascun metodo si sono
+-   [base_solver](https://github.com/epi-xel/linear-solver/blob/main/linear_system_solver/linearsolver/methods/base_solver.py):
+    data la struttura comune di ciascun metodo si sono
     raccolte in questo modulo le funzioni condivise dai metodi.
 
--   `update`: in questo modulo sono raccolte le funzioni di update
+-   [update](https://github.com/epi-xel/linear-solver/blob/main/linear_system_solver/linearsolver/methods/update.py):
+    in questo modulo sono raccolte le funzioni di update
     distinte per ciascun metodo.
 
--   `methods_collecto`: il modulo funge, in termini di design patterns,
+-   [methods_collector](https://github.com/epi-xel/linear-solver/blob/main/linear_system_solver/linearsolver/methods/methods_collector.py):
+    il modulo funge, in termini di design patterns,
     da *facade*, raccogliendo una serie di funzioni ausiliarie che
     permettono l'esecuzione di tutti i metodi per un singolo input con
     una certa tolleranza e, utilizzando `print_utils` (cfr. sezione
@@ -150,7 +154,8 @@ in ogni aggiornamento.
 
 I moduli di *utility* sono:
 
--   `analize`: modulo che implementa la realizzazione di grafici ed
+-   [analize](https://github.com/epi-xel/linear-solver/blob/main/linear_system_solver/linearsolver/utils/analize.py):
+    modulo che implementa la realizzazione di grafici ed
     esportazione di tabelle sulla base dei risultati ottenuti dagli
     algoritmi che implementano i metodi. Per interfacciarsi al metodo
     principale di questo modulo, `export_results()`, di questo modulo è
@@ -158,15 +163,17 @@ I moduli di *utility* sono:
     incapsula i dati dei risultati e facilita la loro gestione tra le
     funzioni di questo modulo.
 
--   `print_utils`: modulo che raccoglie una serie di funzioni che
+-   [print_utils](https://github.com/epi-xel/linear-solver/blob/main/linear_system_solver/linearsolver/utils/print_utils.py):
+    modulo che raccoglie una serie di funzioni che
     permettono la stampa a schermo dei risultati ottenuti dai metodi.
     Per interfacciarsi al metodo principale di questo modulo si deve
     impiegare un oggetto della classe `LinearSystemResult`.
 
--   `constants`: modulo dove sono contenute alcune costanti utilizzate
+-   [constants](https://github.com/epi-xel/linear-solver/blob/main/linear_system_solver/linearsolver/utils/constants.py):
+    modulo dove sono contenute alcune costanti utilizzate
     nell'intero programma.
 
-## Eseguibile
+## [Eseguibile](https://github.com/epi-xel/linear-solver/blob/main/linear_system_solver/main.py)
 
 Una volta implementata la libreria, si è voluto produrre un eseguibile
 che avesse un'interfaccia intuitiva da linea di comando. Eseguendo il
@@ -193,7 +200,7 @@ stampati a schermo di volta in volta i risultati, come esemplificato
 dall'immagine [2](#fig:cli-2).
 
 ![Output su terminale dopo l'esecuzione di `spa1.mtx` con tolleranza
-0.0001.](images/output-cli.png){#fig:cli-2}
+0.0001.](images/output-cli.png)
 
 # Analisi dei risultati
 
@@ -365,20 +372,3 @@ metodo.](images/density-time_barplots.png)
 | Gauss-Seidel       | 1e-10              | 633.3592            | 3589                | 4.948912856957899e-09   |
 | Gradient           | 1e-10              | 0.3212              | 4696                | 3.798767935221748e-09   |
 | Conjugate Gradient | 1e-10              | 0.009               | 74                  | 2.2476276371368195e-11  |
-
-
-# Conclusioni
-
-Gli obiettivi implementativi sono stati raggiunti: l'unica nota dolente
-la ritroviamo nei tempi di esecuzione di Gauss-Seidel con matrici poco
-dense, probabilmente a causa dell'implementazione della sostituzione in
-avanti nell'update del metodo.
-
-L'interfaccia da linea di comando dell'eseguibile consente una buona
-facilità di utilizzo e la produzione di grafici risulta molto efficace
-per un'analisi post esecuzione.
-
-In conclusione, i metodi implementati in questo progetto vedono
-preferire l'utilizzo di Jacobi e Gauss-Seidel per matrici poco dense ma
-molto grandi, mentre gradiente e gradiente coniugato per matrici più
-dense ma meno grandi.

@@ -182,7 +182,7 @@ ottiene l'output rappresentato nella figura
 [1].
 
 ![Interfaccia da linea di comando del
-programma.](images/program-cli.png)
+programma.](report/images/program-cli.png)
 
 Da linea di comando è pertanto possibile inserire una o più matrici con
 diverse tolleranze e ottenere un output sia sul terminale, sia su file,
@@ -200,7 +200,7 @@ stampati a schermo di volta in volta i risultati, come esemplificato
 dall'immagine [2](#fig:cli-2).
 
 ![Output su terminale dopo l'esecuzione di `spa1.mtx` con tolleranza
-0.0001.](images/output-cli.png)
+0.0001.](report/images/output-cli.png)
 
 # Analisi dei risultati
 
@@ -233,7 +233,7 @@ logaritmica.
 
 ![Grafici a barre del tempo di esecuzione, iterazioni ed errore relativo
 di ciascun
-metodo.](images/time-iterations-error_barplots.png)
+metodo.](report/images/time-iterations-error_barplots.png)
 
 Banalmente si può vedere che diminuendo la tolleranza cresce
 esponenzialmente il tempo di esecuzione, il numero di iterazioni e
@@ -255,7 +255,7 @@ questi sospetti osservando le matrici di correlazione in figura
 [4](#fig:cormat).
 
 ![Matrici di correlazione dei risultati di ciascun
-metodo.](images/heatmaps.png)
+metodo.](report/images/heatmaps.png)
 
 #### Jacobi
 
@@ -289,10 +289,10 @@ Le osservazioni fatte qui sopra vengono mostrate intuitivamente dai
 grafici a barre nelle figure [5](#fig:di-b) e [6](#fig:dt-b).
 
 ![Grafici a barre del confronto tra densità e iterazioni per ciascun
-metodo.](images/density-iterations_barplots.png)
+metodo.](report/images/density-iterations_barplots.png)
 
 ![Grafici a barre del confronto tra densità e tempo per ciascun
-metodo.](images/density-time_barplots.png)
+metodo.](report/images/density-time_barplots.png)
 
 | \textbf{Method}    | \textbf{Tolerance} | \textbf{Time (sec)} | \textbf{Iterations} | \textbf{Relative error} |
 |--------------------|--------------------|---------------------|---------------------|-------------------------|
